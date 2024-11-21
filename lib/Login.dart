@@ -3,6 +3,7 @@ import 'package:salesapp/WelcomePage/Background.dart';
 import 'package:salesapp/ForgotPassword.dart';
 import 'package:salesapp/Signup.dart';
 import 'package:salesapp/WelcomePage/customtextfield.dart';
+import 'package:salesapp/HomePage.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -97,7 +98,15 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 15),
 // Login Button
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const HomePage(), // Replace with your desired page
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF9E2C2C),
                     foregroundColor: Colors.white,
