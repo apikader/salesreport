@@ -3,7 +3,7 @@ import 'package:salesapp/welcomepage.dart';
 import 'package:salesapp/WelcomePage/custombttn.dart';
 import 'package:salesapp/WelcomePage/customtextfield.dart';
 import 'package:salesapp/Login.dart';
-import 'WelcomePage/Background.dart';
+import 'package:salesapp/WelcomePage/Background.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -13,18 +13,65 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
+  // Method to validate email and passwords
+  bool _validateInputs() {
+    if (_usernameController.text.isEmpty) {
+      _showSnackBar('Please enter a username');
+      return false;
+    } else if (_emailController.text.isEmpty ||
+        !_emailController.text.contains('@')) {
+      _showSnackBar('Please enter a valid email');
+      return false;
+    } else if (_passwordController.text.isEmpty ||
+        _passwordController.text.length < 6) {
+      _showSnackBar('Password must be at least 6 characters');
+      return false;
+    } else if (_confirmPasswordController.text != _passwordController.text) {
+      _showSnackBar('Passwords do not match');
+      return false;
+    }
+    return true;
+  }
+
+  // Method to show SnackBar
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red,
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Background(
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        // appBar: AppBar(
+        //   leading: IconButton(
+        //     icon: const Icon(Icons.arrow_back),
+        //     onPressed: () {
+        //       Navigator.pushReplacement(
+        //         context,
+        //         MaterialPageRoute(builder: (context) => const WelcomePage()),
+        //       );
+        //     },
+        //   ),
+        //   title: const Text('Sign Up'),
+        //   backgroundColor: const Color(0xFF9E2C2C),
+        // ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-// pic1
+                // pic1
                 Image.asset(
                   'assets/images/icon.png',
                   height: 200,
@@ -34,7 +81,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-//text1
+                    //text1
                     Text(
                       'UNITI ASIA SALES REPORT',
                       textAlign: TextAlign.center,
@@ -45,7 +92,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                     SizedBox(height: 8),
-//text2
+                    //text2
                     Text(
                       'Register Here',
                       textAlign: TextAlign.center,
@@ -57,51 +104,57 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 30),
 
-// Text Fields (Using CustomTextField now)
-                const CustomTextField(
+                // Text Fields (Using CustomTextField now)
+                CustomTextField(
+                  controller: _usernameController,
                   label: 'Username',
                   icon: Icons.person,
                 ),
                 const SizedBox(height: 15),
 
-                const CustomTextField(
+                CustomTextField(
+                  controller: _emailController,
                   label: 'Email',
                   icon: Icons.email,
                 ),
                 const SizedBox(height: 15),
 
-                const CustomTextField(
+                CustomTextField(
+                  controller: _passwordController,
                   label: 'Password',
                   icon: Icons.lock,
                   isPassword: true,
                 ),
                 const SizedBox(height: 15),
 
-                const CustomTextField(
+                CustomTextField(
+                  controller: _confirmPasswordController,
                   label: 'Confirm Password',
                   icon: Icons.lock,
                   isConfirmPassword: true,
                 ),
                 const SizedBox(height: 20),
-// Button
+
+                // Button
                 CustomButton(
                   text: ' Register ',
                   color: const Color.fromARGB(255, 158, 44, 44),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const WelcomePage()),
-                    );
+                    if (_validateInputs()) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const WelcomePage(),
+                        ),
+                      );
+                    }
                   },
                 ),
-
                 const SizedBox(height: 30),
 
-// Footer
+                // Footer
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -111,7 +164,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
+                            builder: (context) => const LoginPage(),
+                          ),
                         );
                       },
                       child: const Text(
