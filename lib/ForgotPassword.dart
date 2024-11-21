@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salesapp/welcomepage.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -13,6 +14,19 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const WelcomePage()),
+            );
+          },
+        ),
+        title: const Text('Sign Up'),
+        backgroundColor: const Color(0xFF9E2C2C),
+      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
