@@ -5,13 +5,20 @@ import 'package:salesapp/Signup.dart';
 import 'package:salesapp/WelcomePage/customtextfield.dart';
 import 'package:salesapp/HomePage.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Background(
-      // Wrap the entire page with the Background widget
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
@@ -20,15 +27,12 @@ class LoginPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-//pic1
                 Image.asset(
                   'assets/images/icon.png',
                   height: 200,
                   width: 200,
                 ),
-
                 const SizedBox(height: 20),
-//text1
                 const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -41,9 +45,7 @@ class LoginPage extends StatelessWidget {
                         height: 2.0,
                       ),
                     ),
-
                     SizedBox(height: 8),
-//text2
                     Text(
                       'Welcome Back!',
                       textAlign: TextAlign.center,
@@ -55,25 +57,20 @@ class LoginPage extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 30),
-
-//TextFields
-                const CustomTextField(
+                CustomTextField(
+                  controller: _emailController,
                   label: 'Email',
                   icon: Icons.email,
                 ),
-
                 const SizedBox(height: 5),
-
-                const CustomTextField(
+                CustomTextField(
+                  controller: _passwordController,
                   label: 'Password',
                   icon: Icons.lock,
-                  obscureText: true,
+                  isPassword: true,
                 ),
-
                 const SizedBox(height: 5),
-// "Forgot Password?"
                 Align(
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
@@ -94,18 +91,10 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 15),
-// Login Button
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            const HomePage(), // Replace with your desired page
-                      ),
-                    );
+                    _handleLogin();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF9E2C2C),
@@ -126,9 +115,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 30),
-// Footer with Sign Up link
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -160,6 +147,44 @@ class LoginPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _handleLogin() {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (email.isEmpty) {
+      _showAlert('Please enter your email address');
+    } else if (password.isEmpty) {
+      _showAlert('Please enter your password');
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+      );
+    }
+  }
+
+  void _showAlert(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
